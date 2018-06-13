@@ -14,22 +14,23 @@ namespace Arduino_ting
         static void Main(string[] args)
         {
             Console.Write("What port: ");
-            string portName = Console.ReadLine();
-            string tid = DateTime.Now.ToString("HH:mm:ss tt");
-            SerialPort port = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One);
-            port.Open();
-            port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
+            string portName = Console.ReadLine(); // Her kan man sætte hvilken port arduino er på
+            string tid = DateTime.Now.ToString("HH:mm:ss tt"); // Det her er tiden, som den tager fra computeren
+            SerialPort port = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One); // for at lave en port med BaudRate, Parity, Databits, og stop bits Arduino hville kommunikere med
+            port.Open(); //At porten er klar til at modtage data
+            port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived); // En metode der vil holde styr på port_DataReceived metoden
 
-            void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
+            void port_DataReceived(object sender, SerialDataReceivedEventArgs e) /*
+                 Lavet til at når programmet har fået data, skal den kun skrive det når der er noget text
+                */
             {   
-               var text = port.ReadExisting();
-               if (text != null)
+               var text = port.ReadExisting(); // læs data
+               if (text != null) // Hvis der er noget tekst
                 {
-                    Console.Write(text + "" + tid);
-                    port.Close();
+                    Console.WriteLine(text); // Den vil skrive dataen
                 }
             }
-            Console.ReadKey();
+            Console.ReadKey(); // For at lukke pogramet kan de klikke på envær tast
         }
     }
 }
