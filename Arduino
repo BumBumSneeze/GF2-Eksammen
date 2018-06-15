@@ -13,10 +13,29 @@ namespace Arduino_ting
     {
         static void Main(string[] args)
         {
+            string[] COMS = { "COM1", "COM2", "COM3", "COM4" };
             Console.Write("What port: ");
             string portName = Console.ReadLine(); // Her kan man sætte hvilken port arduino er på
-            string tid = DateTime.Now.ToString("HH:mm:ss tt"); // Det her er tiden, som den tager fra computeren
-            SerialPort port = new SerialPort(portName, 9600, Parity.None, 8, StopBits.One); // for at lave en port med BaudRate, Parity, Databits, og stop bits Arduino hville kommunikere med
+
+                if (portName == "1")
+                {
+                    portName = COMS[0];
+                }
+                if (portName == "2")
+                {
+                    portName = COMS[1];
+                }
+                if (portName == "3")
+                {
+                    portName = COMS[2];
+                }
+                if (portName == "4")
+                {
+                    portName = COMS[3];
+                }
+            
+            string tid = DateTime.Now.ToString("   HH:mm:ss tt"); // Det her er tiden, som den tager fra computeren
+            SerialPort port = new SerialPort(portName, 64000, Parity.None, 8, StopBits.One); // for at lave en port med BaudRate, Parity, Databits, og stop bits Arduino hville kommunikere med
             port.Open(); //At porten er klar til at modtage data
             port.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived); // En metode der vil holde styr på port_DataReceived metoden
 
@@ -25,9 +44,9 @@ namespace Arduino_ting
                 */
             {   
                var text = port.ReadExisting(); // læs data
-               if (text != null) // Hvis der er noget tekst
+               if (text != null) // Hvis der er noget text
                 {
-                    Console.WriteLine(text); // Den vil skrive dataen
+                    Console.WriteLine(text + tid); // Den vil skrive dataen
                 }
             }
             Console.ReadKey(); // For at lukke pogramet kan de klikke på envær tast
